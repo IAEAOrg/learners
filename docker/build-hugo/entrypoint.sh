@@ -6,16 +6,16 @@ echo "Ensure themes folder is empty"
 rm -rf /src/themes/learners
 
 echo "Download theme ($LEARNERS_GITHUB_THEME_BRANCH)"
-wget -q $LEARNERS_GITHUB_THEME_REPO/archive/refs/heads/$LEARNERS_GITHUB_THEME_BRANCH.zip -O /src/themes/learners.zip
+wget -q $LEARNERS_GITHUB_THEME_REPO/archive/refs/heads/$LEARNERS_GITHUB_THEME_BRANCH.zip -O /tmp/learners.zip
 
 echo "Unpack theme to themes folder"
-unzip -o -qq /src/themes/learners.zip -d /src/themes/
+unzip -o -qq /tmp/learners.zip -d /src/themes/
 
 echo "Ensure correct folder name"
-mv /src/themes/learners_theme* /src/themes/learners
+mv /src/themes/*theme /src/themes/learners
 
 echo "Remove zip file"
-rm /src/themes/learners.zip
+rm /tmp/learners.zip
 
 cd /src/themes/learners
 
