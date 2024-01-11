@@ -1,0 +1,14 @@
+upstream app.diagrams.net {
+    server app.diagrams.net:443;
+}
+
+server {
+    listen 80;
+    server_name draw.cyberrange.rocks;
+    allow all;
+
+    location / {
+        proxy_pass https://app.diagrams.net;
+        proxy_ssl_server_name on;
+    }
+}

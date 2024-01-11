@@ -1,0 +1,27 @@
+---
+swagger: "2.0"
+info:
+  version: "1.0.0"
+  title: "Learners"
+basePath: "/"
+tags:
+  - name: "vnc"
+schemes:
+  - "https"
+consumes:
+  - "application/json"
+produces:
+  - "application/json"
+paths:
+  /documentation/:
+    get:
+      tags:
+        - "documentation"
+      summary: "Get Hugo documentation"
+      responses:
+        200:
+          description: "Successfully retrived docs"
+          schema:
+            $ref: "#/definitions/Pet"
+        404:
+          description: "Documentation doesn't exist"

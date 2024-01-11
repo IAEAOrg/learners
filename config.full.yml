@@ -1,0 +1,112 @@
+learners:
+    landingpage: 'documentation'
+    headline: 'Custom headline'
+    welcomeText: 'Welcome Text on authentication page.'
+    logo: |
+        <svg viewBox="0 0 343.71 136.32" style="enable-background:new 0 0 200 200;" xml:space="preserve" xmlns="http://www.w3.org/2000/svg">
+          <polygon points="343.71 41.4 343.71 0 236 0 236 41.4 268.17 41.4 268.17 136.32 311.54 136.32 311.54 41.4 343.71 41.4" style="fill: #fff;"/>
+          <rect x="184.69" width="43.37" height="136.32" style="fill: #fff;"/>
+          <polygon points="133.38 136.32 176.75 136.32 176.75 0 136.22 0 0 136.32 55.97 136.32 133.38 58.82 133.38 136.32" style="fill: #fff;"/>
+        </svg>
+    theme:
+        primary: '#666666'
+        secondary: '#009899'
+        success: '#009899'
+    language_code: en
+    upload_folder: backend/statics/uploads
+    upload_extensions:
+        - txt
+        - pdf
+
+jwt:
+    jwt_secret_key: '53CR3T'
+    jwt_access_token_duration: 720
+    jwt_for_vnc_access: True
+
+database:
+    db_uri: 'sqlite:///data.db'
+
+venjix:
+    auth_secret: '53CR3T_V3NJ1X'
+    url: 'https://localhost:5001/'
+
+novnc:
+    server: 'https://novnc.learners.com'
+
+statics:
+    directory: 'statics'
+    serve_mode: 'role'
+
+exercise_json: 'statics/hugo/exercises.json'
+
+questionaire_json: 'statics/hugo/questionaires.json'
+
+init_notifications:
+    - title: 'Notification #1'
+      msg:
+          <h1>Notification 1</h1> Message content.
+    - title: 'Notification #2'
+      msg:
+          <h1>Notification 2</h1> Message content.
+
+tabs:
+    # Builtin tabs
+    documentation:
+        tooltip: 'custom tooltip'
+    exercises: true
+    presentations: false
+
+    # Custom tabs
+    mitre:
+        url: 'https://mitre-attack.github.io/attack-navigator/'
+        icon: mitre
+    drawio:
+        url: 'https://app.diagrams.net/'
+        icon: drawio
+        proxy: true
+
+users:
+    username:
+        password: password
+        role: participant
+        groups:
+            - participant
+            - soc
+        vnc_clients:
+            participant_client:
+                target: 'vncclient-participant-hostname'
+                username: 'vncusername'
+                password: 'vncpassword'
+                tooltip: 'participant client'
+            soc_client:
+                target: 'vncclient-soc-hostname'
+                username: 'vncusername'
+                password: 'vncpassword'
+                tooltip: 'soc client'
+        meta:
+            teams:
+                Alpha:
+                    channels:
+                        - 'Main'
+                        - 'Support'
+    admin:
+        password: admin
+        role: instructor
+        groups:
+            - admin
+        vnc_clients:
+            admin_client:
+                target: 'vncclient-hostname'
+                username: 'vncusername'
+                password: 'vncpassword'
+                tooltip: 'admin client'
+        meta:
+            teams:
+                Alpha:
+                    channels:
+                        - 'Main'
+                        - 'Support'
+                Beta:
+                    channels:
+                        - 'Main'
+                        - 'Support'

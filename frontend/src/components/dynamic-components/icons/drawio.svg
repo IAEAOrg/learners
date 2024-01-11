@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+<path stroke-linecap="round" stroke-linejoin="round" d="M14.7,10H9.3c-0.8,0-1.4-0.6-1.4-1.4V4.1c0-0.8,0.6-1.4,1.4-1.4h5.4c0.8,0,1.4,0.6,1.4,1.4v4.5
+	C16.1,9.4,15.5,10,14.7,10z"/>
+<path stroke-linecap="round" stroke-linejoin="round" d="M8.2,21.2H2.8c-0.8,0-1.4-0.6-1.4-1.4v-4.5C1.4,14.6,2,14,2.8,14h5.4c0.8,0,1.4,0.6,1.4,1.4v4.5
+	C9.6,20.6,9,21.2,8.2,21.2z"/>
+<path stroke-linecap="round" stroke-linejoin="round" d="M21.2,21.2h-5.4c-0.8,0-1.4-0.6-1.4-1.4v-4.5c0-0.8,0.6-1.4,1.4-1.4h5.4c0.8,0,1.4,0.6,1.4,1.4v4.5
+	C22.6,20.6,22,21.2,21.2,21.2z"/>
+<line stroke-linecap="round" stroke-linejoin="round" x1="5.5" y1="14" x2="9.5" y2="10"/>
+<line stroke-linecap="round" stroke-linejoin="round" x1="18.5" y1="14" x2="14.5" y2="10"/>
+</svg>

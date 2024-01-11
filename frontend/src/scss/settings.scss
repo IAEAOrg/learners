@@ -1,0 +1,24 @@
+@use "vuetify/_settings" with (
+  $body-font-family: (
+    "Rubik",
+    sans-serif,
+  ),
+  $heading-font-family: (
+    "Rubik",
+    sans-serif,
+  ),
+  $tooltip-background-color: #000000c7,
+
+  $badge-font-size: 0.6rem,
+  $badge-height: auto,
+  $badge-min-width: 0.95rem,
+  $badge-padding: 3px 2px,
+  $badge-border-width: 2px,
+  $badge-border-color: rgb(var(--v-theme-primary)),
+  $button-text-transform: none,
+  $button-text-letter-spacing: normal,
+  $card-title-font-weight: 700,
+  $card-title-font-size: 1.4rem,
+
+  $expansion-panel-text-padding: 0px
+);
