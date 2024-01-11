@@ -1,0 +1,16 @@
+publishDir: 'public/instructor'
+
+ignoreFiles:
+    - \.png$
+    - \.jpg$
+    - \.pdf$
+    - \.svg$
+
+module:
+    mounts:
+        - source: 'content/'
+          target: 'static/res'
+          excludeFiles: '*'
+        - source: '_apps/'
+          target: 'static/_apps'
+          excludeFiles: '*'

@@ -1,0 +1,71 @@
+version: '3'
+
+networks:
+    learners:
+        driver: bridge
+
+services:
+    build-hugo:
+        build:
+            context: ./build-hugo
+        environment:
+            LEARNERS_GITHUB_THEME_REPO: '${LEARNERS_GITHUB_THEME_REPO:-https://github.com/iaeaorg/learners}'
+            LEARNERS_GITHUB_THEME_BRANCH: '${LEARNERS_GITHUB_THEME_BRANCH:-main-theme}'
+            LEARNERS_BASE_URL: '${LEARNERS_BASE_URL:-}'
+        volumes:
+            - ../.:/src
+        networks:
+            - learners
+
+    build-certs:
+        build:
+            context: ./build-certs
+        environment:
+            CA_CN: 'LearnersCA'
+            LEARNERS_CN: 'learners'
+            LEARNERS_SAN: 'learners'
+            DAYS_VALID: '365'
+        volumes:
+            - ./ssl:/certs
+        networks:
+            - learners
+
+    learners-backend:
+        build:
+            context: ./learners-backend
+            args:
+                LEARNERS_GITHUB_REPO: '${LEARNERS_GITHUB_REPO:-https://github.com/iaeaorg/learners}'
+                LEARNERS_GITHUB_BRANCH: '${LEARNERS_GITHUB_BRANCH:-main-application}'
+        expose:
+            - 5000
+        restart: always
+        volumes:
+            - ./config.yml:/app/config.yml
+            - ../public:/app/webroot
+            - ./learners-data:/app/data
+            - ./ssl:/app/ssl
+        networks:
+            - learners
+        depends_on:
+            - build-hugo
+            - build-certs
+
+    learners-frontend:
+        build:
+            context: ./learners-frontend
+            args:
+                LEARNERS_BASE_URL: '${LEARNERS_BASE_URL:-/}'
+                LEARNERS_GITHUB_REPO: '${LEARNERS_GITHUB_REPO:-https://github.com/iaeaorg/learners}'
+                LEARNERS_GITHUB_BRANCH: '${LEARNERS_GITHUB_BRANCH:-main-application}'
+        ports:
+            - 443:443
+        environment:
+            LEARNERS_BASE_URL: '${LEARNERS_BASE_URL:-}'
+            LEARNERS_ENABLE_NGINX_SUBSTITUTION: '${LEARNERS_ENABLE_NGINX_SUBSTITUTION:-1}'
+        volumes:
+            - ./ssl:/app/ssl
+            - ./learners-frontend/nginx.conf:/etc/nginx/template/nginx.conf.template
+        networks:
+            - learners
+        depends_on:
+            - learners-backend

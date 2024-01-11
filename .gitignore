@@ -1,0 +1,7 @@
+public/
+themes/*
+docker/learners-data/*
+docker/ssl/*
+.hugo_build.lock
+.DS_Store
+resources/_gen

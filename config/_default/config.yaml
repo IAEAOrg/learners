@@ -1,0 +1,53 @@
+languageCode: 'en-US'
+defaultContentLanguage: 'en'
+
+title: 'CyberRange'
+theme: 'learners'
+metaDataFormat: 'yaml'
+defaultContentLanguageInSubdir: true
+
+markup:
+    defaultMarkdownHandler: goldmark
+    goldmark:
+        extensions:
+            footnote: true
+            linkify: false
+        renderer:
+            unsafe: true
+
+staticDir: 'static'
+
+Languages:
+    en:
+        languageName: 'English'
+    fr:
+        languageName: 'French'
+    es:
+        languageName: 'Spanish'
+
+params:
+    landingPageURL: '/en'
+    showVisitedLinks: false
+    disableBreadcrumb: true
+    disableNextPrev: true
+    disableLandingPageButton: true
+    disableLanguageSwitchingButton: true
+    disableInlineCopyToClipBoard: false
+    titleSeparator: '::'
+    themeVariant: 'cyberrange'
+    devStage: true
+    instructorNotes: true
+
+outputs:
+    home: ['HTML', 'RSS', 'JSON']
+
+module:
+    hugoVersion:
+        min: '0.100.0'
+    mounts:
+        - source: 'content/'
+          target: 'content'
+        - source: '_apps/'
+          target: 'static/_apps'
+        - source: '_slides/'
+          target: 'static/_slides'

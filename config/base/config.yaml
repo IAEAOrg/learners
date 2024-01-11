@@ -1,0 +1,12 @@
+publishDir: 'public/base'
+
+staticDir: 'static'
+
+module:
+    mounts:
+        - source: 'content/'
+          target: 'static/res'
+        - source: '_apps/'
+          target: 'static/_apps'
+        - source: '_slides/'
+          target: 'static/_slides'
