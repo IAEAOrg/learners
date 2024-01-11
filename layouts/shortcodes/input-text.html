@@ -1,0 +1,13 @@
+{{ $input_label := .Get "label" | htmlEscape }} 
+{{ $input_name := $input_label | lower | replaceRE "[^0-9a-z]" "_" | replaceRE "-+" "_" }}
+{{ $input_required := .Get "required" | default false }}
+{{ $input_wide := .Get "wide" | default false }}
+{{ $input_placeholder := (replace (.Get "placeholder") "</br>" "&#10;")}}
+{{ $input_instructor :=  (replace (.Get "instructor") "</br>" "&#10;")}}
+
+<div class="input-row {{ if $input_wide }}wide{{ end }}">
+  <label for="{{ $input_name }}">{{ $input_label }}{{ if $input_required }} <span class="required_marker">(required)</span>{{ end }}</label>
+  <div class="input-field-wrapper">
+    <input type="text" id="{{ $input_name }}" name="{{ $input_name }}" {{ if $input_placeholder }}placeholder="{{ $input_placeholder }}" {{ end }}class="input {{ if $input_required }}required{{ end }} {{if and (.Site.Params.instructorNotes) ($input_instructor)}} instructor-notes {{ end }}" {{if and (.Site.Params.instructorNotes) ($input_instructor)}} value="{{$input_instructor}}" {{end}}>
+  </div>
+</div>

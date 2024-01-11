@@ -1,0 +1,15 @@
+{{ $classes := "input input-table"}}
+{{ if (.Get "autoextend") | default false }}
+    {{ $classes = printf "%s autoextend" $classes }}
+{{ end }}
+
+{{ $htmlTable := .Inner | markdownify }}
+{{ $htmlTable := replace $htmlTable "<table>" (printf "<table class=\"%s\">" $classes) }}
+
+{{ $oldBody := "<tbody>" }}
+{{ $newBody := "<tbody>" }}
+{{ $htmlTable = replace $htmlTable $oldBody $newBody }}
+{{ $htmlTable = replaceRE `<td([^>]*)>([\s\n\r]*?)<\/td>` (printf "<td$1 contenteditable=\"true\"></td>") $htmlTable }}
+{{ $htmlTable = replaceRE "<td style=\"" "<td style=\"height: 40px;" $htmlTable }}
+
+{{ $htmlTable | safeHTML }}

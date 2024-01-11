@@ -1,0 +1,92 @@
+{{ $questionnaire_name := $.Page.Title | default $.Page.Params.MenuTitle }} 
+{{ if ($.Page.Scratch.Get $questionnaire_name | default false) }}
+  {{ $divider := "------------------------------------------------------------------------------------------------------------\n"}}
+  {{- errorf "\n\n%sDuplicate questionnaire name: '%s' already used on page '%s'.\nAll questionnaire Names must be unique per page.\n%s" $divider $questionnaire_name $.Page.File $divider -}}
+{{ end }}
+{{ $.Page.Scratch.Set $questionnaire_name true }}
+
+{{ $pages := (where .Site.Pages "Section" $.Page.Section).ByWeight }}
+{{ $root_candidate := $.Page.CurrentSection }}
+{{ range $pages }}
+  {{ if in ($root_candidate.File.Dir | string ) (.File.Dir | string) }}
+    {{ if not (eq . $.Page.FirstSection)}}
+      {{ $root_candidate = .}}
+    {{ end }}
+  {{ end }}
+{{ end }}
+{{ $root_name := $root_candidate.Title }}
+{{ $root_weight := $root_candidate.Weight | int }}
+{{ $parent_weight := $.Page.Parent.Weight | int }}
+{{ $child_weight := $.Page.Weight | int }}
+
+{{ $.Page.Scratch.Add "local_questionnaire_id" 1 }}
+{{ $local_questionnaire_id := ($.Page.Scratch.Get "local_questionnaire_id") }}
+
+{{ $global_questionnaire_id := md5 (printf "%s%s" $.Page.File.Dir $questionnaire_name) }}
+
+{{ $order_weight := add (add (mul $root_weight 1000) (mul $parent_weight 100)) (add (mul $child_weight 10) ($local_questionnaire_id | int)) | int}}
+
+{{ $.Page.Scratch.SetInMap "questionnaire" $global_questionnaire_id (dict "global_questionnaire_id" $global_questionnaire_id "order_weight" $order_weight "questionnaire_name" (htmlEscape $questionnaire_name) "local_questionnaire_id" ($.Page.Scratch.Get "local_questionnaire_id") "page_title" (htmlEscape $.Page.Title) "parent_page_title" (htmlEscape $root_name) "child_weight" $child_weight "parent_weight" $parent_weight "root_weight" $root_weight)}}
+
+<input class="exercise-info" type="hidden" name="info" value='{"global_questionnaire_id":"{{ $global_questionnaire_id }}", "questionnaire_name":"{{ htmlEscape $questionnaire_name }}", "exercise_type":"questionnaire" }'> 
+
+
+<form
+  id="{{ $global_questionnaire_id }}"
+  class="form questionnaire-control"
+>
+  {{ .Inner }}
+
+<div class="exercise-control">
+  
+  <h4>Questionnaire Submission</h4>
+
+  <section class="stats_display">
+    <ul class="stats-list">
+      <li>
+        <span>Questionnaire submitted</span>
+        <span class="stat_indicator_container">
+          <div
+            id="exercise_executed"
+            class="stat_indicator none"
+          >
+            <svg
+              class="stat_icon"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 52 52"
+            >
+              <circle class="stat_circle" cx="26" cy="26" r="26" fill="none" />
+              <path
+                class="stat_check"
+                fill="none"
+                d="M14.1 27.2l7.1 7.2 16.7-16.8"
+              />
+              <g class="stat_cross">
+                <path d="m15.07675,36.98865l21.84649,-21.9773" fill="none" />
+                <path d="m36.98865,36.92324l-21.9773,-21.84649" fill="none" />
+              </g>
+            </svg>
+          </div>
+        </span>
+      </li>
+   </ul>
+  </section>
+
+  <button id="submitquestionnaire" type="submit" class="btn-submit-form" value="">
+    <svg class="bi" width="22" height="22" style="margin-right: 5px;">
+      <use xlink:href="#play"></use>
+    </svg>
+    submit
+  </button>
+
+  <div id="msg-container">
+    <div id="msg"></div>
+  </div>
+
+  <div id="msg-detail">
+  </div>
+
+  <div id="history" style="display: none"></div>
+
+</div>
+</form>

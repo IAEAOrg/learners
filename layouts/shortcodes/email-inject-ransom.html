@@ -1,0 +1,49 @@
+{{ $from := .Get "from" | default "" }}
+{{ $timestamp := .Get "timestamp" | default "" }}
+{{ $subject := .Get "subject" | default "" }}
+{{ $skull := .Get "skull" | default true }}
+
+
+<div class="inject-email-container ransom">
+
+<div class="inject-email-header">
+<span class="label">From:</span> {{ $from }}<br>
+<span class="label">Time:</span> {{ $timestamp }}<br>
+<span class="label">Subject:</span> {{ $subject }}<br>
+</div>
+
+<hr class="inject-email-seperator">
+
+{{ .Inner }}
+
+{{ if $skull }}
+<pre style="text-align: center; background: none">
+uuuuuuu
+uu$$$$$$$$$$$uu
+uu$$$$$$$$$$$$$$$$$uu
+u$$$$$$$$$$$$$$$$$$$$$u
+u$$$$$$$$$$$$$$$$$$$$$$$u
+u$$$$$$$$$$$$$$$$$$$$$$$$$u
+u$$$$$$"   "$$$"   "$$$$$$u
+"$$$$"      u$u       $$$$"
+$$$u       u$u       u$$$
+$$$u      u$$$u      u$$$
+"$$$$uu$$$   $$$uu$$$$"
+"$$$$$$$"   "$$$$$$$"
+u$$$$$$$u$$$$$$$u
+u$"$"$"$"$"$"$u
+uuu        $$u$ $ $ $ $u$$       uuu
+u$$$$        $$$$$u$u$u$$$       u$$$$
+$$$$$uu      "$$$$$$$$$"     uu$$$$$$
+u$$$$$$$$$$$uu    """""    uuuu$$$$$$$$$$
+$$$$"""$$$$$$$$$$uuu   uu$$$$$$$$$"""$$$"
+"""          ""$$$$$$$$$$$uu       ""$"""
+uuuu ""$$$$$$$$$$uuu
+u$$$uuu$$$$$$$$$uu ""$$$$$$$$$$$uuu$$$
+$$$$$$$$$$""""           ""$$$$$$$$$$$"
+"$$$$$"                      ""$$$$""
+  $$$"                         $$$$"
+</pre>
+{{ end }}
+    
+</div>

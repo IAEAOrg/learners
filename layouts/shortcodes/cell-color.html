@@ -1,0 +1,4 @@
+{{ $color := .Get "color" | default "white" }}
+{{ $textcolor := .Get "textcolor" | default "black" }}
+
+<div class="cell-color" color="{{ $color }}" textcolor="{{ $textcolor }}"></div>

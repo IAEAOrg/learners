@@ -1,0 +1,153 @@
+<link
+  rel="stylesheet"
+  href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+/>
+
+<style>
+  img.face-choice {
+    max-height: 150px;
+  }
+
+  label {
+    cursor: pointer;
+    filter: grayscale(100%);
+  }
+
+  label:hover {
+    filter: grayscale(0);
+  }
+
+  input[type="radio"]:checked + label {
+    filter: grayscale(0);
+  }
+</style>
+
+<form id="myForm" action="/submit-form" method="post">
+  <div class="form-group">
+    <div class="row">
+      <fieldset id="gallery">
+        Select an Employee's Face:<br />
+        <input
+          type="radio"
+          name="face"
+          class="sr-only"
+          id="Dwayne_Johnson"
+          value="static/faces/dwayne_johnson_002.jpg"
+        />
+        <label for="Dwayne_Johnson">
+          <img
+            class="face-choice"
+            src="faces/dwayne_johnson_002.jpg"
+            alt="Dwayne_Johnson"
+            onclick="event.preventDefault()"
+          />
+        </label>
+        <input
+          type="radio"
+          name="face"
+          class="sr-only"
+          id="Shania_Twain"
+          value="static/faces/shania_twain_002.jpg"
+        />
+        <label for="Shania_Twain">
+          <img
+            class="face-choice"
+            src="faces/shania_twain_002.jpg"
+            alt="Shania_Twain"
+            onclick="event.preventDefault()"
+          />
+        </label>
+        <input
+          type="radio"
+          name="face"
+          class="sr-only"
+          id="Chris_Rock"
+          value="static/faces/chris_rock_002.jpg"
+        />
+        <label for="Chris_Rock">
+          <img
+            class="face-choice"
+            src="faces/chris_rock_002.jpg"
+            alt="Chris_Rock"
+            onclick="event.preventDefault()"
+          />
+        </label>
+      </fieldset>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="id">Select an ID:</label>
+    <select class="form-control" id="id" name="id">
+      <option value="101">101 (Dwayne Johnson)</option>
+      <option value="102">102 (Shania Twain)</option>
+      <option value="103">103 (Chris Rock)</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="pin">Enter PIN code:</label>
+    <input type="text" class="form-control" id="pin" name="pin" required />
+  </div>
+  <div class="form-group">
+    <input
+      type="submit"
+      id="submission_btn"
+      class="btn btn-primary btn-lg btn-block"
+      value="Submit"
+    />
+  </div>
+</form>
+
+<script>
+  document
+    .getElementById("myForm")
+    .addEventListener("submit", function (event) {
+      // Prevent form submission
+      event.preventDefault();
+      document.getElementById("submission_btn").disabled = true;
+      setTimeout(function () {
+        document.getElementById("submission_btn").disabled = false;
+      }, 8000);
+      // Get form data
+      var form = event.target;
+      var formData = new FormData(form);
+      const formDataObj = {};
+      formData.forEach((value, key) => (formDataObj[key] = value));
+      json_data = JSON.stringify(formDataObj);
+      console.log(json_data);
+      // Perform form submission
+      // TODO: Change to Venjix IP and Port Number
+      fetch("http://10.16.0.196:4444/execution/<script_name>", {
+        method: "POST",
+        body: json_data,
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          charset: "utf-8",
+        },
+      })
+        .then((response) => {
+          // Handle the response from the backend
+          console.log(response);
+        })
+        .catch((error) => {
+          // Handle any error that occurred during form submission
+          console.error(error);
+        });
+    });
+  // Get the gallery container element
+  var gallery = document.getElementById("gallery");
+  // Attach event listener to the gallery container
+  gallery.addEventListener("click", function (event) {
+    // Get the clicked image element
+    var clickedImage = event.target;
+    // Check if the clicked element is an image
+    if (clickedImage.tagName === "IMG") {
+      // Prevent the default event action (e.g., following a link)
+      event.preventDefault();
+      // Perform your desired action with the selected image
+      //console.log("Selected Image Source:", clickedImage.src);
+      label = clickedImage.getAttribute("alt"); //checked = true;
+      document.getElementById(label).checked = true;
+    }
+  });
+</script>

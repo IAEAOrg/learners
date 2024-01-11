@@ -1,0 +1,32 @@
+<!-- prettier-ignore -->
+{{ $pageid := (md5 $.Page.File.Path) }} 
+{{ $exid := ($.Page.Scratch.Get "exid") | string }} 
+{{ $form_id := $exid | printf "%s%s" $pageid }} 
+
+{{ $page := (htmlEscape $.Page.Title) }}
+<!-- prettier-ignore-end -->
+
+<form class="form comment-form">
+  <!-- Shortcode HTML content -->
+  <input type="hidden" name="info" value='{"page":"{{ $page }}"}' />
+
+  <div id="comment-section">
+    <div class="input-row">
+      <h2>Feedback</h2>
+      <p>
+        Thank you for your participation in this course. We would appreciate it
+        if you could give us a short feedback on this exercise.
+      </p>
+      <textarea id="comment" name="comment" rows="4" cols="50" class="input"></textarea>
+    </div>
+
+    <button id="submitComment" type="submit" class="btn-submit-form">
+      <svg class="bi" width="22" height="22" style="margin-right: 7px">
+        <use xlink:href="#chat"></use>
+      </svg>
+      send feedback
+    </button>
+
+    <div class="response"></div>
+  </div>
+</form>

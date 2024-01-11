@@ -1,0 +1,41 @@
+{
+    "exercises": [
+      {{- $first := true -}}
+      {{- range $index, $page := .Site.Pages -}}
+          {{- if ne $page.Type "json" -}}
+              {{- $exercises := $page.Scratch.Get "exercise" -}}
+              {{- range $exercises -}}
+                  {{- if not $first -}}, {{- end -}}
+                  {{- $first = false -}}
+                  {{- . | jsonify (dict "indent" "    ") -}}
+              {{- end -}}
+          {{- end -}}
+      {{- end -}}
+      ],
+    "questionnaires": [
+      {{- $first = true -}}
+      {{- range $index, $page := .Site.Pages -}}
+          {{- if ne $page.Type "json" -}}
+              {{- $questionnaire := $page.Scratch.Get "questionnaire" -}}
+              {{- range $questionnaire -}}
+                  {{ if not $first -}}, {{- end -}}
+                  {{ $first = false -}}
+                  {{- . | jsonify (dict "indent" "    ") -}}
+              {{- end -}}
+          {{- end -}}
+      {{- end -}}
+      ],
+      "pages": [
+        {{- $first = true -}}
+        {{- range $index, $page := .Site.Pages -}}
+            {{- if ne $page.Type "json" -}}
+                {{- $pageinfo := $page.Scratch.Get "pageinfo" -}}
+                {{- range $pageinfo -}}
+                    {{ if not $first -}}, {{- end -}}
+                    {{ $first = false -}}
+                    {{- . | jsonify (dict "indent" "    ") -}}
+                {{- end -}}
+            {{- end -}}
+        {{- end -}}
+        ]
+  }

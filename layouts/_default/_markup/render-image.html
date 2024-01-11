@@ -1,0 +1,27 @@
+{{ $src := .Destination }}
+{{ $alt := .PlainText | safeHTML }}
+{{ $tag := index (first 1 (after 1 (split $src "#"))) 0 }}
+{{ $caption := index (first 1 (split $alt ";")) 0  }}
+{{ $pageDir := replace $.Page.File.Dir "\\" "/" }}
+
+{{ $height := index (split (index (split $alt "height=") 1) ";") 0 }}
+{{ $width := index (split (index (split $alt "width=") 1) ";") 0 }}  
+{{ $align := index (split (index (split $alt "align=") 1) ";") 0 }} 
+
+{{ if (not .Page.Site.Params.devStage) }}
+{{ $src = printf "%s/res/%s%s" .Page.Site.BaseURL $pageDir $src }}
+{{ end }}
+
+{{- if eq $tag "figure" -}}
+   {{ $.Page.Scratch.Add "imgcount" 1 }}
+   {{ $count := ($.Page.Scratch.Get "imgcount") | string }}
+   <div class="image-container">
+       <img src="{{ $src }}" width="" height="" alt="{{ $caption }}" />
+       <p>
+           <span><b>Figure {{ $count }}{{ if $caption }}:{{ end }}</b> </span>
+           <span>{{ $caption }}</span>
+       </p>
+   </div>
+{{- else -}}
+   <img src="{{ $src }}" style="max-width: {{ $width }}; max-height: {{ $height }}; {{ if $align }} margin-{{ $align }}: 0; {{ end }}" alt="{{ $alt }}" />
+{{- end -}}

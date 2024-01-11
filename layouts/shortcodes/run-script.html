@@ -1,0 +1,29 @@
+<!-- Get parameters -->
+{{ $script := .Get "script" }} 
+{{ $label := .Get "label" | default "script" }}
+{{ $uuid := printf "%s%s" "id" (delimit (shuffle (split (md5 $script) "" )) "") }}
+
+<div class="execution-container">
+  <button id="{{ $uuid }}" type="submit" class="btn-run-exercise" onclick='executeScript(this, "{{ $script }}")' >
+    <svg class="bi" width="22" height="22" style="margin-right: 5px;">
+      <use xlink:href="#play"></use>
+    </svg>
+    run {{ $label }}
+  </button>
+
+  <div class="execution-stat-container">
+    <span class="stat_indicator_container">
+      <div class="stat_indicator loading" style="display: none" >
+        <svg class="stat_icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52" >
+          <circle class="stat_circle" cx="26" cy="26" r="26" fill="none" />
+          <path class="stat_check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" />
+          <g class="stat_cross"> <path d="m15.07675,36.98865l21.84649,-21.9773" fill="none" /><path d="m36.98865,36.92324l-21.9773,-21.84649" fill="none" /></g>
+        </svg>
+      </div>
+    </span>
+    <div class="stat_message"></div>
+  </div>
+  <script type="text/javascript">
+    checkScriptExecution("{{ $uuid }}", "{{ $script }}");
+ </script>
+</div>

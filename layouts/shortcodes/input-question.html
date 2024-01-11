@@ -1,0 +1,38 @@
+{{ $question := .Get "question" }}
+{{ $options_string := .Get "options" }} 
+{{ $all := .Get "all" | default false }}
+
+{{ if $all }}
+{{ $options_string = printf "%s%s" $options_string "; All of the above" }}
+{{ end }}
+
+{{ $global_questionnaire_id := md5 (printf "%s%s" $.Page.File.Dir ( $.Page.Title | default $.Page.Params.MenuTitle )) }}
+{{ $global_question_id := md5 (printf "%s%s" $global_questionnaire_id $question) }}
+
+{{ $.Page.Scratch.Add "local_question_id" 1 }}
+{{ $local_question_id := ($.Page.Scratch.Get "local_question_id") }}
+
+{{ $.Page.Scratch.SetInMap "questionnaire_question" $global_question_id (dict "global_question_id" ($global_question_id) "local_question_id" ($local_question_id) "question" ($question) "options" ($options_string) "global_questionnaire_id" $global_questionnaire_id ) }}
+
+
+<div class="input-row wide questionnaire-options-container">
+   <h4>{{ $local_question_id }}. {{ $question }}</h4>
+
+   <fieldset class="questionnaire-option-container">
+
+   {{ $options := split $options_string ";"}} 
+   {{ $alphabet := split ("A,B,C,D,E,F,G") "," }}
+   {{ $final_index := 0 }}
+   {{- range $index, $label := $options -}}
+      <div class="questionnaire-option">
+         <input class="input" type="radio" id="{{ $global_question_id }}-{{ $index }}" name="{{ $global_question_id }}" value='{{ strings.TrimLeft " " $label }}'>
+         <label for="{{ $global_question_id }}-{{ $index }}">
+               {{ index $alphabet $index }}. {{ $label -}}
+         </label>
+      </div>
+      {{ $final_index = add $final_index 1 }}
+   {{- end -}}
+   </fieldset>
+</div>
+
+

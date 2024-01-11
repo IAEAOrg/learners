@@ -1,0 +1,12 @@
+{{ partial "header.html" . }}
+
+{{if .Site.Home.Content }} 
+
+{{.Site.Home.Content}}	
+{{else}}
+	{{ with .GetPage "/documentation" }}
+		{{ .Content }}
+	{{end}}
+{{ end }}  
+
+{{ partial "footer.html" . }}

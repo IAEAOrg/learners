@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang='{{ .Page.Language | default "en" }}' class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {{ hugo.Generator }}
+    {{ partial "meta.html" . }}
+    {{ partial "favicon.html" . }}
+    <title>{{ .Title }} {{ default "::" .Site.Params.titleSeparator }} {{ .Site.Title }}</title>
+
+    {{ $assetBusting := not .Site.Params.disableAssetsBusting }}
+    <link href='{{"css/nucleus.css" | relURL}}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}' rel="stylesheet">
+    <link href='{{"css/fontawesome-all.min.css" | relURL}}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}' rel="stylesheet">
+    <link href='{{"css/hybrid.css" | relURL}}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}' rel="stylesheet">
+    <link href='{{"css/featherlight.min.css" | relURL}}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}' rel="stylesheet">
+    <link href='{{"css/perfect-scrollbar.min.css" | relURL}}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}' rel="stylesheet">
+    <link href='{{"css/auto-complete.css" | relURL}}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}' rel="stylesheet">
+    <link href='{{"css/stackoverflow-dark.min.css" | relURL}}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}' rel="stylesheet">
+    <link href='{{"css/theme.css" | relURL}}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}' rel="stylesheet">
+    <link href='{{"css/tabs.css" | relURL}}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}' rel="stylesheet">
+    <link href='{{"css/hugo-theme.css" | relURL}}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}' rel="stylesheet">
+    <link href='{{"css/theme-cyberrange_exercise-control.css"| relURL}}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}' rel="stylesheet">
+    <link href='{{"css/theme-cyberrange_pinpad.css"| relURL}}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}' rel="stylesheet">
+    <link href='{{"css/theme-cyberrange_form.css"| relURL}}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}' rel="stylesheet">
+    
+    
+    {{with .Site.Params.themeVariant}}
+    <link href='{{(printf "css/theme-%s.css" .) | relURL}}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}' rel="stylesheet">
+    {{end}}
+    {{ range .Site.Params.custom_css -}}
+    <link href='{{(printf "%s" .) | relURL}}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}' rel="stylesheet">
+    {{- end }}
+
+    <!-- jQuery -->
+    <script src='{{"js-libs/jquery-3.6.0.min.js"| relURL}}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}'></script>
+    <script src='{{"js-libs/jquery-ui-1.13.1.min.js"| relURL}}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}'></script>
+    <script src='{{"js-libs/jquery-validate-1.19.3.min.js"| relURL}}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}'></script>
+    
+    <!-- Simplebar -->
+    <link href='{{"css/simplebar.css"| relURL}}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}' rel="stylesheet">
+    <script src='{{"js-libs/simplebar-5.3.8.min.js"| relURL}}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}'></script>
+    
+    <!-- PDF -->
+    <script src='{{"js-libs/pdf.min.js"| relURL}}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}'></script>
+    <script src='{{"js-libs/pdf.worker.min.js"| relURL}}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}'></script>
+    <script src='{{"js-libs/pdf-lib.min.js"| relURL}}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}'></script>
+    <script src='{{"js-libs/pdfobject.min.js"| relURL}}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}'></script>
+    
+    <!-- Create PDF -->
+    <script src='{{"js-libs/jspdf-2.5.1.umd.min.js"| relURL}}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}'></script>
+    <script src='{{"js-libs/html2canvas-1.4.1.umd.min.js"| relURL}}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}'></script>
+    <script src='{{"js-libs/jspdf.plugin.autotable-3.5.6.min.js"| relURL}}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}'></script>
+
+    <!-- Learners Scripts -->
+    <script src='{{"js/learners_token-handling.js"| relURL}}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}'></script>
+    <script src='{{"js/learners_exercise-control.js"| relURL}}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}'></script>
+    <script src='{{"js/learners_exercise-script.js"| relURL}}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}'></script>
+    <script src='{{"js/learners_exercise-form.js"| relURL}}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}'></script>
+    <script src='{{"js/learners_createPDF.js"| relURL}}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}'></script>
+    <script src='{{"js/learners_exercises-main.js"| relURL}}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}'></script>
+    <script src='{{"js/learners_embedPDF.js"| relURL}}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}'></script>
+    <script src='{{"js/learners_special-functions.js"| relURL}}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}'></script>
+    <script src='{{"js/learners_sse.js"| relURL}}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}'></script>
+    <script src='{{"js/learners_pageloader.js"| relURL}}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}'></script>
+    <script src='{{"js/learners_helpers.js"| relURL}}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}'></script>
+    <script src='{{"js/learners_table-inputs.js"| relURL}}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}'></script>
+    
+    <!-- Markdown Enhancements -->
+    <script src='{{"js/markdown_enhancement.js"| relURL}}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}'></script>
+    
+    <!-- DRAW IO -->
+    <script src='{{"js/drawio-diagram-editor.js"| relURL}}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}'></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+    </style>
+    {{ partial "custom-header.html" . }}
+  </head>
+  <body class="" data-url="{{ .RelPermalink }}">
+    {{ partial "svglib.html" . }}
+    {{ partial "menu.html" . }}
+        <section id="body">
+        
+        {{ if .Params.redirect }}
+        
+          {{ $redirect_url := printf "%s%s%s" (.Page.Site.BaseURL | lower) (.RelPermalink | lower) (.Params.redirect | lower) }}
+          {{ if (not .Site.Params.devStage) }}
+            {{ $redirect_url = printf "%s%s" (.RelPermalink | lower) (.Params.redirect | lower) }}
+          {{ end }}
+          
+          <sub style="padding: 20px;">Redirecting to {{ $redirect_url }} ...</sub>
+          <script>
+            window.location = "{{ $redirect_url }}"
+          </script>
+        {{ end }}
+        
+        <div id="overlay"></div>
+        {{ if .Params.slides }}
+          {{ $pdf_src := .Params.slides }}
+
+          {{ if .Params.global_slides | default false }}
+            {{ $pdf_src = printf "%s%s%s" (.Page.Site.BaseURL) ("/_slides/") (.Params.slides) }}
+          {{ else }}
+            {{ if (not .Site.Params.devStage) }}
+              {{ $pdf_src = printf "%s%s%s%s" (.Page.Site.BaseURL) ("/res/") ($.Page.File.Dir) (.Params.slides) }}
+            {{ end }}
+          {{ end }}
+
+        <style>
+          #body {
+            height: 100vh !important;
+            overflow: hidden;
+          }
+        </style>
+
+        <!-- Get questionnaires data -->
+        {{ if .Params.questionnaire }}
+
+          {{ $root_candidate := $.Page.CurrentSection }}
+          {{ range ((where .Site.Pages "Section" $.Page.Section).ByWeight) }}
+            {{ if and (in ($root_candidate.File.Dir | string ) (.File.Dir | string)) (not (eq . $.Page.FirstSection)) }} {{ $root_candidate = .}} {{ end }}
+          {{ end }}
+
+          {{ $order_weight := add (add (mul $root_candidate.Weight 100) (mul $.Page.Parent.Weight 10)) $.Page.Weight | int}}
+
+          {{ $global_questionnaire_id := md5 (printf "%s%s%s" $.Page.File.Dir ( $.Page.Title | default $.Page.Params.MenuTitle ) $.Page.Lang) }}
+          {{ $.Page.Scratch.Add "local_question_id" 1 }}
+          {{ $local_question_id := ($.Page.Scratch.Get "local_question_id") }}
+
+          {{ $local_questionnaire_data := slice }}
+          {{ range $index, $element := .Params.questionnaire }}
+            {{ $element = merge $element (dict "id" (add $index 1)) }}
+            {{ $element = merge $element (dict "global_question_id" (md5 (printf "%s%s" $global_questionnaire_id (add $index 1)))) }}
+            {{ $local_questionnaire_data = $local_questionnaire_data | append $element }}
+          {{ end }}
+          {{ $.Page.Scratch.SetInMap "questionnaire_data" $.Page.Lang $local_questionnaire_data }}
+          
+          <!-- Loop over all languages to get the translated versions (if available) -->
+          {{ range .Translations }}
+            {{ $currentLang := .Lang }}
+            {{ if .Params.questionnaire }}
+              {{ $local_questionnaire_data := slice }}
+              {{ range $index, $element := .Params.questionnaire }}
+                {{ $element = merge $element (dict "id" (add $index 1)) }}
+                {{ $element = merge $element (dict "global_question_id" (md5 (printf "%s%s" $global_questionnaire_id (add $index 1)))) }}
+                {{ $local_questionnaire_data = $local_questionnaire_data | append $element }}
+              {{ end }}
+              {{ $.Page.Scratch.SetInMap "questionnaire_data" $currentLang $local_questionnaire_data }}    
+            {{ end }}
+          {{ end }}
+          
+          {{ $.Page.Scratch.SetInMap "questionnaire" $global_questionnaire_id (dict "questions" ($.Page.Scratch.Get "questionnaire_data") "global_questionnaire_id" $global_questionnaire_id "order_weight" $order_weight "child_weight" $.Page.Weight "parent_weight" $.Page.Parent.Weight "root_weight" $root_candidate.Weight "page_title" (htmlEscape $.Page.Title) "parent_page_title" (htmlEscape $root_candidate.Title)) }}
+  
+        {{ end }}
+
+
+        <div class="slides-container">
+          <object
+            data="{{ $pdf_src }}#view=fit"
+            type="application/pdf"
+            style="width: 100%; height: 100%"
+          >
+            <iframe
+              src="{{ $pdf_src }}#view=fitW"
+              style="border: none; width: 100%; height: 100%"
+            >
+              This browser does not support PDFs. Please download the PDF to view it:
+              <a href="{{ $pdf_src }}">Download PDF</a>
+            </iframe>
+          </object>          
+        </div>
+        <!-- <div class="padding highlightable slides-margin"> -->
+        {{ else }}
+        <div class="padding highlightable">
+        <div id="head-tags">
+        {{ partial "tags.html" . }}
+        </div>
+        {{ if .Params.chapter }}
+          <div id="chapter">
+        {{ end }}
+        <div id="body-inner">
+          {{if and (not .IsHome) (not .Params.chapter) }}
+            <h1>
+              {{ if or (eq .Kind "taxonomy") (eq .Kind "term") }}
+                {{.Data.Singular}} ::
+              {{ end }}
+              {{ if not .Params.slides }}
+                {{.Title}}
+              {{ end }}
+            </h1>
+          {{end}}
+        {{end}}
+
+        {{define "breadcrumb"}}
+          {{$parent := .page.Parent }}
+          {{ if $parent }}
+            {{ $value := (printf "<a href='%s'>%s</a> > %s" $parent.RelPermalink $parent.Title .value) }}
+            {{ template "breadcrumb" dict "page" $parent "value" $value }}
+          {{else}}
+            {{.value|safeHTML}}
+          {{end}}
+        {{end}}

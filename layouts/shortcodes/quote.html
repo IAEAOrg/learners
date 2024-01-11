@@ -1,0 +1,4 @@
+{{ $input_url := .Get "url" | default "" }}
+<blockquote cite="{{ $input_url }}">
+{{ .Inner }}
+</blockquote>

@@ -1,0 +1,78 @@
+<!-- Get parameters -->
+{{ $exercise_name := .Get "name" }} 
+
+<!-- Find the root exercise -->
+{{ $root_candidate := $.Page.CurrentSection }}
+{{ range ((where .Site.Pages "Section" $.Page.Section).ByWeight) }}
+{{ if and (in ($root_candidate.File.Dir | string ) (.File.Dir | string)) (not (eq . $.Page.FirstSection)) }} {{ $root_candidate = .}} {{ end }}
+{{ end }}
+
+<!-- Generate IDs based on the weights -->
+{{ $.Page.Scratch.Add "local_exercise_id" 1 }}
+{{ $local_exercise_id := ($.Page.Scratch.Get "local_exercise_id") }}
+{{ $global_exercise_id := printf "%s%s" "exid" (md5 (printf "%s%s" $.Page.File.Dir $local_exercise_id)) }}
+{{ $order_weight := add (add (mul $root_candidate.Weight 1000) (mul $.Page.Parent.Weight 100)) (add (mul $.Page.Weight 10) ($local_exercise_id | int)) | int}}
+
+<!-- Set exercise information for the exercise json -->
+{{ $.Page.Scratch.SetInMap "exercise" $global_exercise_id (dict "global_exercise_id" $global_exercise_id "order_weight" $order_weight "exercise_name" (htmlEscape $exercise_name) "local_exercise_id" ($.Page.Scratch.Get "local_exercise_id") "page_title" (htmlEscape $.Page.Title) "parent_page_title" (htmlEscape $root_candidate.Title) "exercise_type" "form" "child_weight" $.Page.Weight "parent_weight" $.Page.Parent.Weight "root_weight" $root_candidate.Weight)}}
+
+
+<!-- Shortcode HTML content -->
+<input class="exercise-info" type="hidden" name="info" value='{"global_exercise_id":"{{ $global_exercise_id }}", "exercise_name":"{{ htmlEscape $exercise_name }}", "exercise_type":"form" }'> 
+
+<form 
+  id="upload_form"
+  class="form exercise-control "
+></form>
+
+<form
+  id="{{ $global_exercise_id }}"
+  class="form exercise-control"
+>
+  {{ .Inner }}
+
+
+<div>
+
+  <button 
+    id="submitExercise" 
+    type="submit" 
+    class="btn-submit-withstatus" 
+    value="">
+    <div class="label">
+      submit
+    </div>
+    <div class="status">
+      <div id="msg-container">
+        <span id="msg" class="stat_message"></span>
+        <span class="stat_indicator_container">
+          <div
+            id="exercise_executed"
+            class="stat_indicator loading"
+            style="display: none">
+            <svg
+              class="stat_icon"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 52 52">
+              <circle class="stat_circle" cx="26" cy="26" r="26" fill="none" />
+              <path
+                class="stat_check"
+                fill="none"
+                d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+              <g class="stat_cross">
+                <path d="m15.07675,36.98865l21.84649,-21.9773" fill="none" />
+                <path d="m36.98865,36.92324l-21.9773,-21.84649" fill="none" />
+              </g>
+            </svg>
+          </div>
+          </span>
+      </div>
+    </div>
+  </button>
+  
+  <div class="exercise-control">
+    <div id="history" style="display: none"></div>
+  </div>
+</div>
+
+</form>

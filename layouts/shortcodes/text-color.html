@@ -1,0 +1,9 @@
+{{ $textcolor := .Get "textcolor" | default "black" }}
+{{ $text := .Get "text" | default "" }}
+
+
+{{ with .Inner }}
+<div style="color:{{$textcolor}};">{{ . }}</div>
+{{ else }}
+<div style="color:{{$textcolor}};">{{ $text }}</div>
+{{ end }}

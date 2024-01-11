@@ -1,0 +1,61 @@
+{{ $input_wide := .Get "wide" | default false }}
+  
+<!-- Labels -->
+{{ $likelihood_label := .Get "likelihood_label" | default "Likelihood" }}
+{{ $impact_label := .Get "impact_label" | default "Impact" }}
+{{ $risk_label := .Get "risk_label" | default "Risk as (L x I)" }}
+
+<!-- Likelihood defaults -->
+{{ $likelihood_options := (split (.Get "likelihood_options" ) ";")}}
+{{ with $likelihood_options }}
+  {{ if gt (len .) 1 }}    
+    {{ $likelihood_options = . }}
+  {{ else }}
+    {{ $likelihood_options = (split "1 - Remote;2 - Unlikely;3 - Possible;4 - Likely;5 - Certain" ";")}}  
+  {{ end }}
+{{ end }}
+
+<!-- Impact defaults -->
+{{ $impact_options := (split (.Get "impact_options" ) ";")}}
+{{ with $impact_options }}
+  {{ if gt (len .) 1 }}    
+    {{ $impact_options = . }}
+  {{ else }}
+    {{ $impact_options = (split "1 - Trivial;2 - Minor;3 - Moderate;4 - Major;5 - Critical" ";")}}  
+  {{ end }}
+{{ end }}
+
+
+<!-- Unique Risk ID -->
+{{ $.Page.Scratch.Add "riskid" 1 }}
+{{ $concat_id := printf "riskid_%s" ($.Page.Scratch.Get "riskid") | string }}
+{{ $risk_id := md5 $concat_id }}
+
+
+<!-- Likelihood -->
+<div class="input-row {{ if $input_wide }}wide{{ end }}">
+  <label for="likelihood_{{ $risk_id }}" class="riskfieldlabel">{{ $likelihood_label }} *</label>
+  <select id="likelihood_{{ $risk_id }}" name="likelihood_{{ $risk_id }}" class="input required riskfield" onchange="calcRiskValue(this)">
+    {{ range $index, $element := $likelihood_options }}<option value="{{ . }}" {{ if eq $index 0 }}selected{{ end }}>{{ . }}</option>{{ end }}
+  </select>
+</div>
+
+<!-- Impact -->
+<div class="input-row {{ if $input_wide }}wide{{ end }}">
+  <label for="impact_{{ $risk_id }}" class="riskfieldlabel">{{ $impact_label }} *</label>
+  <select id="impact_{{ $risk_id }}" name="impact_{{ $risk_id }}" class="input required riskfield" onchange="calcRiskValue(this)">
+    {{ range $index, $element := $impact_options }}<option value="{{ . }}" {{ if eq $index 0 }}selected{{ end }}>{{ . }}</option>{{ end }}
+  </select>  
+</div>
+
+<!-- Risk -->
+<div class="input-row {{ if $input_wide }}wide{{ end }}">  
+  <label for="risk_{{ $risk_id }}" class="riskfieldlabel">{{ $risk_label }}</label>
+  <input type="text" id="risk_{{ $risk_id }}" name="risk_{{ $risk_id }}" readonly class="input riskfield" onclick="calcRiskValue(this)">
+</div>
+
+<script>
+$( document ).ready(function() {
+  $(".riskfield").trigger("click")
+});
+</script>

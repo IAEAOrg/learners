@@ -1,0 +1,4 @@
+{{ $cols := .Get "cols" | default 1 }}
+{{ $rows := .Get "rows" | default 1 }}
+
+<div class="cell-span" cols="{{ $cols }}" rows="{{ $rows }}"></div>

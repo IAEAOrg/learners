@@ -1,0 +1,40 @@
+{{ $file := .Get "file" }}
+{{ $show_all_pages := .Get "show_all_pages" | default false }}
+
+{{ $.Page.Scratch.Add "pdfid" 1 }}
+{{ $pdf_container_id := printf "pdfid_%s" (md5 ($.Page.Scratch.Get "pdfid") | string) }}
+
+<div id="{{ $pdf_container_id }}" 
+  class="pdf-container" 
+  show_all_pages="{{ if $show_all_pages }}true{{ end }}"
+  num_pages="0"
+  style="resize: vertical; overflow: hidden; border: 2px solid #e3e3e3;"
+  >
+  <object
+    data="{{ .Page.Site.BaseURL }}/res/{{ $.Page.File.Dir }}{{ $file }}#view=fit"
+    type="application/pdf"
+    style="width: 100%; height: 100%"
+  >
+    <iframe
+      src="{{ .Page.Site.BaseURL }}/res/{{ $.Page.File.Dir }}{{ $file }}#view=fitW"
+      style="border: none; width: 100%; height: 100%"
+    >
+      This browser does not support PDFs. Please download the PDF to view it:
+      <a href="{{ .Page.Site.BaseURL }}/res/{{ $.Page.File.Dir }}{{ $file }}">Download PDF</a>
+    </iframe>
+  </object>
+</div>
+
+<script>
+
+  resizePDF("{{ $pdf_container_id }}");
+
+  // init pdf rendering
+  renderPDF("{{ $pdf_container_id }}", "{{ $file | relURL }}");
+  
+  // Add event listener
+  $(window).on("resize", function () {
+    resizePDF("{{ $pdf_container_id }}");
+  });
+  
+</script>

@@ -1,0 +1,4 @@
+{{ $caption := .Get "caption" | default "" }} 
+{{ $file := .Get "file" }}
+
+<img src="{{ .Page.Site.BaseURL }}/res/{{ $.Page.File.Dir }}{{ $file }}" width="" height="" alt="{{ $caption }}" />

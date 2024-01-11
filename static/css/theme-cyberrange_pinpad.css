@@ -1,0 +1,185 @@
+
+/* PINPAD */
+
+#PINform input:focus,
+#PINform select:focus,
+#PINform textarea:focus,
+#PINform button:focus {
+  outline: none;
+}
+#PINform {
+  background: var(--MENU-HEADER-BG-color);
+  border: 1px solid var(--mid-1);
+  border-radius: 4px;
+  width: 100%;
+  min-width: 300px;
+  padding: 30px;
+  -webkit-box-shadow: 0px 5px 5px -0px rgba(0, 0, 0, 0.15);
+  -moz-box-shadow: 0px 5px 5px -0px rgba(0, 0, 0, 0.15);
+  box-shadow: 0px 5px 5px -0px rgba(0, 0, 0, 0.15);
+  display: flex;
+}
+#pinArea,
+#pictureArea {
+  width: 50%;
+  float: left;
+}
+#PINbox {
+  background: #ededed;
+  margin: 3.5%;
+  width: 92%;
+  font-size: 4em;
+  text-align: center;
+  border: 1px solid #d5d5d5;
+}
+
+#inputArea {
+  width: 280px;
+  margin: auto;
+  display: block;
+}
+.PINbutton {
+  background: var(--light-1);
+  color: var(--light-2);
+  border: none;
+  box-shadow: 0px 2px 2px -0px rgba(0, 0, 0, 0.15);
+  border-radius: 4px;
+  font-size: 1.5em;
+  text-align: center;
+  width: 70px;
+  height: 70px;
+  margin: 10px;
+  padding: 0;
+  float: left;
+  transition: all 100ms;
+  font-weight: 600;
+}
+.clear,
+.enter {
+  font-size: 1em;
+}
+.PINbutton:hover {
+  background-color: #c7c7c7;
+  color: #000;
+}
+.PINbutton:active {
+  background-color: var(--MAIN-TEXT-color);
+  color: #fff;
+}
+.clear {
+  background-color: var(--danger);
+  color: var(--light);
+}
+.clear:hover {
+  background-color: #e2435b;
+  color: var(--light);
+}
+.clear:active {
+  background-color: #e2435b;
+  color: #fff;
+}
+.enter {
+  background-color: var(--green-mid);
+  color: var(--light);
+}
+.enter:hover {
+  background-color: var(--green-light);
+  color: var(--light);
+}
+.enter:active {
+  background-color: var(--green-light);
+  color: var(--light);
+}
+.shadow {
+  -webkit-box-shadow: 0px 5px 5px -0px rgba(0, 0, 0, 0.3);
+  -moz-box-shadow: 0px 5px 5px -0px rgba(0, 0, 0, 0.3);
+  box-shadow: 0px 5px 5px -0px rgba(0, 0, 0, 0.3);
+}
+
+#pictureUploadArea {
+  font-size: 1.25rem; /* 20 */
+  background-color: #ededed;
+  position: relative;
+  outline: 2px dashed var(--light-2);
+  transition: outline-offset 0.15s ease-in-out, background-color 0.15s linear;
+  height: 350px;
+  margin: 3.5%;
+  margin-bottom: 7%;
+  border-radius: 4px;
+}
+
+.box__input {
+  display: block;
+  margin: auto;
+  position: relative;
+  top: 30%;
+}
+
+.box__icon {
+  width: 100%;
+  height: 80px;
+  fill: var(--light-2);
+  display: block;
+  margin-bottom: 40px;
+}
+
+#pictureUploadArea.ui-droppable-hover {
+  background-color: #dddddd;
+  color: #000;
+  outline-offset: -10px;
+}
+
+#pictureUploadArea label {
+  max-width: 80%;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: pointer;
+  overflow: hidden;
+  margin: auto;
+  text-align: center;
+}
+
+#dvSource {
+  display: flex;
+  height: 100px;
+  text-align: center;
+}
+#dvSource img.dropableimg {
+  width: 100px !important;
+  height: 100px !important;
+  object-fit: cover !important;
+  display: block;
+  cursor: move; /* fallback if grab cursor is unsupported */
+  cursor: grab;
+  cursor: -moz-grab;
+  cursor: -webkit-grab;
+  margin: 5px !important;
+}
+.dropableimg {
+  border-radius: 8px;
+  border: 0;
+  box-shadow: 0px 2px 2px -0px rgba(0, 0, 0, 0.15);
+}
+.dropableimg:active {
+  cursor: grabbing;
+  cursor: -moz-grabbing;
+  cursor: -webkit-grabbing;
+}
+#dvSource .dropableimg:hover {
+  opacity: 0.8;
+}
+
+#pictureUploadArea img {
+  width: 100% !important;
+  height: 350px !important;
+  object-fit: cover !important;
+  margin: 0px;
+}
+
+.draggable {
+  filter: alpha(opacity=60);
+  opacity: 0.6;
+}
+.dropped {
+  position: static !important;
+}

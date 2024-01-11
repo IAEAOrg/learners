@@ -1,0 +1,26 @@
+{{ $input_label := .Get "label" | htmlEscape }} 
+{{ $input_name := $input_label | lower | replaceRE "[^0-9a-z]" "_" | replaceRE "-+" "_" }}
+{{ $input_required := .Get "required" | default false }}
+{{ $input_wide := .Get "wide" | default false }}
+
+<div id="upload-container">
+
+<div class="input-row {{ if $input_wide }}wide{{ end }} uploader-element">
+  <label class=" uploader-element">{{ $input_label }}{{ if $input_required }} <span class="required_marker">(required)</span>{{ end }}</label>
+  <div class="input-field-wrapper">
+    <input type="file" id="file" name="file" style="cursor: pointer;" class="input {{ if $input_required }}required{{ end }} uploader-element" form="upload_form">
+  </div>
+  <input type="hidden" name="attachment" id="attachment" class="input {{ if $input_required }}required{{ end }}">
+  
+  <button id="upload-submit" type="submit" class="btn-submit-form btn-submit-upload uploader-element" value=""  form="upload_form">
+    <svg class="bi" width="22" height="22">
+      <use xlink:href="#upload"></use>
+    </svg>
+    Upload
+  </button>
+
+</div>
+
+<div id="msg-detail" class="upload-msg"></div>
+
+</div>

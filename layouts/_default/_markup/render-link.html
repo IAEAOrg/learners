@@ -1,0 +1,23 @@
+{{- $windows := in $.Page.File.Dir "\\" -}}
+{{- $src := .Destination | safeURL -}}
+{{- $destination := index (first 1 (split $src "?target=")) 0 -}}
+{{- $local_resource_link := false -}}
+
+{{- $target := index (first 1 (after 1 (split $src "?target="))) 0 | default "_blank" -}}
+{{- $absolute_url := $destination -}}
+{{- if eq $target "_apps" -}}
+    {{ $absolute_url = printf "%s%s%s" (.Page.Site.BaseURL) ("/_apps/") $destination }}
+    {{ $target = "_blank" }}
+{{- end -}}
+
+{{- if $windows -}}
+    {{ $local_resource_link = os.FileExists ((printf "%s%s" ($.Page.File.Dir) ($destination)) | replaceRE "://|/" "\\" ) }}
+{{- else -}}
+    {{ $local_resource_link = os.FileExists (printf "%s%s" ($.Page.File.Dir) ($destination)) }}
+{{- end -}}
+
+{{- if $local_resource_link -}}
+    {{ $absolute_url = printf "%s%s%s%s" (.Page.Site.BaseURL) ("/res/") ($.Page.File.Dir) ($destination) }}
+{{- end -}}
+
+<a href="{{ $absolute_url }}"{{ with .Title}} title="{{ . }}"{{ end }} target="{{ $target }}">{{ .Text | safeHTML }}</a>

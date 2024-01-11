@@ -1,0 +1,266 @@
+<!-- Get parameters -->
+{{ $exercise_name := "Case and Incident Management" }} 
+
+<!-- Find the root exercise -->
+{{ $root_candidate := $.Page.CurrentSection }}
+{{ range ((where .Site.Pages "Section" $.Page.Section).ByWeight) }}
+{{ if and (in ($root_candidate.File.Dir | string ) (.File.Dir | string)) (not (eq . $.Page.FirstSection)) }} {{ $root_candidate = .}} {{ end }}
+{{ end }}
+
+<!-- Generate IDs based on the weights -->
+{{ $.Page.Scratch.Add "local_exercise_id" 1 }}
+{{ $local_exercise_id := ($.Page.Scratch.Get "local_exercise_id") }}
+{{ $global_exercise_id := printf "%s%s" "exid" (md5 (printf "%s%s" $.Page.File.Dir $local_exercise_id)) }}
+{{ $order_weight := add (add (mul $root_candidate.Weight 1000) (mul $.Page.Parent.Weight 100)) (add (mul $.Page.Weight 10) ($local_exercise_id | int)) | int}}
+
+<!-- Set exercise information for the exercise json -->
+{{ $.Page.Scratch.SetInMap "exercise" $global_exercise_id (dict "global_exercise_id" $global_exercise_id "order_weight" $order_weight "exercise_name" (htmlEscape $exercise_name) "local_exercise_id" ($.Page.Scratch.Get "local_exercise_id") "page_title" (htmlEscape $.Page.Title) "parent_page_title" (htmlEscape $root_candidate.Title) "exercise_type" "form" "child_weight" $.Page.Weight "parent_weight" $.Page.Parent.Weight "root_weight" $root_candidate.Weight)}}
+
+
+<!-- Shortcode HTML content -->
+<input class="exercise-info" type="hidden" name="info" value='{"global_exercise_id":"{{ $global_exercise_id }}", "exercise_name":"{{ htmlEscape $exercise_name }}", "exercise_type":"form" }'> 
+
+<form
+  id="{{ $global_exercise_id }}"
+  class="form exercise-control"
+>
+
+  <div class="case-management-container">
+    <div id="cases">
+      <fieldset>
+        <div class="case-container">
+          <div class="head">
+            <input
+              type="text"
+              id="case-name"
+              name="case-name"
+              class="input"
+              placeholder="Case Name"
+            />
+
+            <label for="case-status"> Status: </label>
+
+            <select
+              name="case-status"
+              id="case-status"
+              class="input status-input"
+            >
+              <option value="" disabled selected>-- please select --</option>
+              <option value="open">open</option>
+              <option value="in progress">in progress</option>
+              <option value="closed">closed</option>
+            </select>
+
+            <!-- Delete Icon -->
+            <div class="delete-row">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="w-6 h-6"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
+                />
+              </svg>
+            </div>
+
+            <!-- Expand Icon -->
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="w-6 h-6 chevron"
+              style="width: 36px;"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M19.5 8.25l-7.5 7.5-7.5-7.5"
+              />
+            </svg>
+        </div>
+        <div class="content" style="display: none">
+            <label for="incident-manager">Incident Manager</label>
+            <input
+              type="text"
+              id="incident-manager"
+              name="incident-manager"
+              class="input"
+              placeholder="Placeholder"
+            />
+
+            <label for="description">Description</label>
+            <textarea
+              rows="6"
+              type="text"
+              id="description"
+              name="description"
+              class="input"
+              placeholder="Placeholder"
+            ></textarea>
+
+            <label for="affected-systems">Affected Systems</label>
+            <input
+              type="text"
+              id="affected-systems"
+              name="affected-systems"
+              class="input"
+              placeholder="e.g. Webserver, External Firewall, ..."
+            />
+
+            <label for="kibana-case-number">Kibana Case Number (optional)</label>
+            <input
+              type="text"
+              id="kibana-case-number"
+              name="kibana-case-number"
+              class="input"
+              placeholder=""
+            />
+
+            <label for="severity-level">Severity Level</label>
+            <input
+              type="range"
+              name="severity"
+              min="1"
+              max="100"
+              value="50"
+              class="slider input"
+              id="severity-level"
+            />
+            <table class="text">
+              <tr>
+                <td>low</td>
+                <td style="text-align: center">medium</td>
+                <td style="text-align: right">high</td>
+              </tr>
+            </table>
+
+            <label class="table-heading">Indicators of compromise</label>
+            <table class="editable-table" name="indicators-of-ompromise">
+              <tr>
+                <th>Time (YYYY/MM/DD HH:MM)</th>
+                <th>System</th>
+                <th>IOC</th>
+              </tr>
+              <tr>
+                <td contenteditable="true"></td>
+                <td contenteditable="true"></td>
+                <td contenteditable="true"></td>
+              </tr>
+            </table>
+
+            <label class="table-heading">RACI-Matrix</label>
+            <table class="editable-table" name="raci-matrix">
+              <tr>
+                <th>Person</th>
+                <th>RACI</th>
+              </tr>
+              <tr>
+                <td contenteditable="true"></td>
+                <td contenteditable="true"></td>
+              </tr>
+            </table>
+
+            <label class="table-heading">Implemented measures</label>
+            <table class="editable-table" name="implemented-measures">
+              <tr>
+                <th>Time (YYYY/MM/DD HH:MM)</th>
+                <th>Action</th>
+              </tr>
+              <tr>
+                <td contenteditable="true"></td>
+                <td contenteditable="true"></td>
+              </tr>
+            </table>
+
+            <label class="table-heading">Overview of editing</label>
+            <table class="editable-table" name="overview-of-editing">
+              <tr>
+                <th>Time (YYYY/MM/DD HH:MM)</th>
+                <th>Editor</th>
+              </tr>
+              <tr>
+                <td contenteditable="true"></td>
+                <td contenteditable="true"></td>
+              </tr>
+            </table>
+
+            <input
+              type="hidden"
+              class="input divider"
+              name="divider"
+              value="--divider--"
+            />
+          </div>
+        </div>
+    </div>
+  </fieldset>
+
+    <button type="button" class="add-case" value="">
+      <span>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+          class="w-6 h-6"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
+          ></path>
+        </svg>
+      </span>
+      <span> add case </span>
+    </button>
+  </div>
+
+  <button 
+    id="submitExercise" 
+    type="submit" 
+    class="btn-submit-withstatus" 
+    value="">
+    <div class="label">
+      save cases
+    </div>
+    <div class="status">
+      <div id="msg-container">
+        <span id="msg" class="stat_message"></span>
+        <span class="stat_indicator_container">
+          <div
+            id="exercise_executed"
+            class="stat_indicator loading"
+            style="display: none">
+            <svg
+              class="stat_icon"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 52 52">
+              <circle class="stat_circle" cx="26" cy="26" r="26" fill="none" />
+              <path
+                class="stat_check"
+                fill="none"
+                d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+              <g class="stat_cross">
+                <path d="m15.07675,36.98865l21.84649,-21.9773" fill="none" />
+                <path d="m36.98865,36.92324l-21.9773,-21.84649" fill="none" />
+              </g>
+            </svg>
+          </div>
+          </span>
+      </div>
+    </div>
+  </button>
+  
+  <div class="exercise-control">
+    <div id="history" style="display: none"></div>
+  </div>
+</form>

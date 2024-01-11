@@ -1,0 +1,4 @@
+{{ $color := .Get "color" | default "white" }}
+{{ $textcolor := .Get "textcolor" | default "black" }}
+
+<div class="col-color" color="{{ $color }}" textcolor="{{ $textcolor }}"></div>

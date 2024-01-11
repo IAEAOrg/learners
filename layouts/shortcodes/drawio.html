@@ -1,0 +1,35 @@
+{{ $src := .Get "src" }}
+{{ $input_label := .Get "label" | htmlEscape | default "DrawIO Exercise" }} 
+{{ $input_name := $input_label | lower | replaceRE "[^0-9a-z]" "_" | replaceRE "-+" "_" }}
+{{ $drawio_id := printf "%s%s" "drawio" (md5 (printf "%s%s" $src $input_name)) }}
+{{ $pageDir := replace $.Page.File.Dir "\\" "/" }}
+
+{{ if (not .Page.Site.Params.devStage) }}
+{{ $src = printf "%s/res/%s%s" .Page.Site.BaseURL $pageDir $src }}
+{{ end }}
+
+<div id="{{ $drawio_id }}" class="drawio-exercise-container" devstage="{{ .Page.Site.Params.devStage }}">
+
+<div class="input-row wide">
+    <label for="drawio-input">{{ $input_label }}</label>
+    <div class="drawio-previewer" title="Click to edit image">
+        <object class="drawio-object input" name="drawio_{{ $input_name }}" type="image/svg+xml" data="{{ $src }}" ></object>
+        <div class="btn_wrapper_horizontal">
+            <button class="drawio-link" onclick="editDrawIO(event, this)" href="#">
+                <svg class="bi" width="28" height="28" style="margin-left: 2px">
+                    <use xlink:href="#icon_drawio"></use>
+                </svg>
+                <span>
+                    Edit in DrawIO
+                </span>
+            </button>
+            <button class="drawio-link drawio-reset" onclick="resetDrawIO(event, this, '{{ $src }}')" href="#">
+                <span>
+                    Reset
+                </span>
+            </button>
+        </div>
+    </div>
+</div>
+
+</div>

@@ -1,0 +1,5 @@
+{{ $href := .Get "href" | default "#" }}
+{{ $label := .Get "label" | default $href }}
+{{ $newTab := .Get "newTab" | default true }}
+
+<a href="{{ $href }}" target="{{ if $newTab }}_blank{{ end }}">{{ $label }}</a>

@@ -1,0 +1,18 @@
+{{ $from := .Get "from" | default "" }}
+{{ $timestamp := .Get "timestamp" | default "" }}
+{{ $subject := .Get "subject" | default "" }}
+
+
+<div class="inject-email-container">
+
+<div class="inject-email-header">
+<span class="label">From:</span> {{ $from }}<br>
+<span class="label">Time:</span> {{ $timestamp }}<br>
+<span class="label">Subject:</span> {{ $subject }}<br>
+</div>
+
+<hr class="inject-email-seperator">
+
+{{ .Inner }}
+    
+</div>

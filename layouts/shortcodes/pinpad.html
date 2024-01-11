@@ -1,0 +1,138 @@
+{{ $_hugo_config := `{ "version": 1 }` }} {{ $exercise_title := .Get "title" }}
+{{ $exercise_id := $exercise_title }}
+
+<script src="/js/learners_pinpad.js"></script>
+
+<div id="{{ $exercise_id }}" class="exercise-control">
+  <h5>Exercise Control</h5>
+  <h4>{{ $exercise_title }}</h4>
+
+  <div id="PINcode">
+    <form
+      action=""
+      method=""
+      name="PINform"
+      id="PINform"
+      autocomplete="off"
+      draggable="true"
+      class="box has-advanced-upload"
+    >
+      <div id="pictureArea">
+        <div id="pictureUploadArea">
+          <div class="box__input">
+            <svg
+              class="box__icon"
+              xmlns="http://www.w3.org/2000/svg"
+              width="50"
+              height="43"
+              viewBox="0 0 50 43"
+            >
+              <path
+                d="M48.4 26.5c-.9 0-1.7.7-1.7 1.7v11.6h-43.3v-11.6c0-.9-.7-1.7-1.7-1.7s-1.7.7-1.7 1.7v13.2c0 .9.7 1.7 1.7 1.7h46.7c.9 0 1.7-.7 1.7-1.7v-13.2c0-1-.7-1.7-1.7-1.7zm-24.5 6.1c.3.3.8.5 1.2.5.4 0 .9-.2 1.2-.5l10-11.6c.7-.7.7-1.7 0-2.4s-1.7-.7-2.4 0l-7.1 8.3v-25.3c0-.9-.7-1.7-1.7-1.7s-1.7.7-1.7 1.7v25.3l-7.1-8.3c-.7-.7-1.7-.7-2.4 0s-.7 1.7 0 2.4l10 11.6z"
+              ></path>
+            </svg>
+            <label>drag image here</label>
+          </div>
+          <input type="hidden" name="ajax" value="1" />
+        </div>
+        <div id="dvSource">
+          <img alt="" class="dropableimg" src="images/pic1.jpg" />
+          <img alt="" class="dropableimg" src="images/pic2.png" />
+          <img alt="" class="dropableimg" src="images/pic3.jpg" />
+          <img alt="" class="dropableimg" src="images/pic4.jpg" />
+        </div>
+      </div>
+
+      <div id="pinArea">
+        <input id="PINbox" type="password" value="" name="PINbox" disabled />
+        <div id="inputArea">
+          <br />
+          <input type="button" class="PINbutton" name="1" value="1" id="1" />
+          <input type="button" class="PINbutton" name="2" value="2" id="2" />
+          <input type="button" class="PINbutton" name="3" value="3" id="3" />
+          <br />
+          <input type="button" class="PINbutton" name="4" value="4" id="4" />
+          <input type="button" class="PINbutton" name="5" value="5" id="5" />
+          <input type="button" class="PINbutton" name="6" value="6" id="6" />
+          <br />
+          <input type="button" class="PINbutton" name="7" value="7" id="7" />
+          <input type="button" class="PINbutton" name="8" value="8" id="8" />
+          <input type="button" class="PINbutton" name="9" value="9" id="9" />
+          <br />
+          <input type="button" class="PINbutton clear" value="clear" />
+          <input type="button" class="PINbutton" name="0" value="0" id="0" />
+          <input type="button" class="PINbutton enter" value="enter" />
+        </div>
+      </div>
+    </form>
+    <br />
+  </div>
+
+  <section class="stats_display">
+    <ul class="stats-list">
+      <li>
+        <span>Script executed</span>
+        <span class="stat_indicator_container">
+          <div
+            id="exercise_executed"
+            class="stat_indicator loading"
+            style="display: none"
+          >
+            <svg
+              class="stat_icon"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 52 52"
+            >
+              <circle class="stat_circle" cx="26" cy="26" r="26" fill="none" />
+              <path
+                class="stat_check"
+                fill="none"
+                d="M14.1 27.2l7.1 7.2 16.7-16.8"
+              />
+              <g class="stat_cross">
+                <path d="m15.07675,36.98865l21.84649,-21.9773" fill="none" />
+                <path d="m36.98865,36.92324l-21.9773,-21.84649" fill="none" />
+              </g>
+            </svg>
+          </div>
+        </span>
+      </li>
+      <li>
+        <span>Exercise completed</span>
+        <span class="stat_indicator_container">
+          <div
+            id="exercise_completed"
+            class="stat_indicator loading"
+            style="display: none"
+          >
+            <svg
+              class="stat_icon"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 52 52"
+            >
+              <circle class="stat_circle" cx="26" cy="26" r="26" fill="none" />
+              <path
+                class="stat_check"
+                fill="none"
+                d="M14.1 27.2l7.1 7.2 16.7-16.8"
+              />
+              <g class="stat_cross">
+                <path d="m15.07675,36.98865l21.84649,-21.9773" fill="none" />
+                <path d="m36.98865,36.92324l-21.9773,-21.84649" fill="none" />
+              </g>
+            </svg>
+          </div>
+        </span>
+      </li>
+    </ul>
+  </section>
+
+  <div id="msg-container">
+    <div id="success-msg"></div>
+    <div id="error-msg"></div>
+  </div>
+
+  <div id="history" style="display: none"></div>
+
+  {{ .Inner }}
+</div>
