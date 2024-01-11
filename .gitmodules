@@ -1,0 +1,4 @@
+[submodule "themes/learners"]
+	path = themes/learners
+	url = https://github.com/IAEAOrg/Learners.git
+	branch = main-theme
